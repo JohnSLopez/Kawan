@@ -1,0 +1,4 @@
+C:/Repos/Kawan/CMakeFiles/Kawan.dir
+C:/Repos/Kawan/CMakeFiles/ALL_BUILD.dir
+C:/Repos/Kawan/CMakeFiles/ZERO_CHECK.dir
+C:/Repos/Kawan/engine/CMakeFiles/test.dir

@@ -11,6 +11,8 @@
 *.sln.docstates
 *.env
 *.p4ignore
+*.vcxproj*
+*.sln
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

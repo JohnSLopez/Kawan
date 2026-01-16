@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Repos/Kawan/cmake_install.cmake",
+		"C:/Repos/Kawan/engine/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
