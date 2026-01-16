@@ -6,8 +6,10 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Executable)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Executable)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Executable)
 
-add_subdirectory(engine)
-add_subdirectory(src)
+set(ENGINE_TARGET_NAME KawanEngine)
+set(TEST_TARGET_NAME test)
 
-add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} test)
+add_subdirectory(KawanEngine)
+add_subdirectory(testbed)
+
+target_link_libraries(${TEST_TARGET_NAME} ${ENGINE_TARGET_NAME})

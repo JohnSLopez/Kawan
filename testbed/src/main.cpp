@@ -1,4 +1,4 @@
-#include "../engine/test.h"
+#include <EngineTest/EngineTest.h>
 
 int main()
 {
