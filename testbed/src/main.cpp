@@ -1,6 +1,8 @@
-#include <EngineTest/EngineTest.h>
+#include <KawanEngine/KawanEngine.h>
 
 int main()
 {
-    PrintHelloWorld();
+    Kawan::KawanEngine engine;
+    engine.init();
+    engine.shutdown();
 }

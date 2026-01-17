@@ -1,8 +1,8 @@
 find_package(Vulkan REQUIRED)
 
 set(ENGINE_SRCS
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/EngineTest/EngineTest.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/EngineTest.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/KawanEngine/KawanEngine.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/KawanEngine.cpp"
 )
 
 set(ENGINE_INCLUDE_DIRS
