@@ -8,6 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Executable)
 
 set(ENGINE_TARGET_NAME KawanEngine)
 set(TEST_TARGET_NAME test)
+set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty")
 
 add_subdirectory(KawanEngine)
 add_subdirectory(testbed)
