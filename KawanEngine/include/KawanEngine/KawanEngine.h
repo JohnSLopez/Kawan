@@ -4,7 +4,7 @@
 
 namespace Kawan
 {
-	KW_EXPORT class KawanEngine
+	class KawanEngine
 	{
 	public:
 		KW_EXPORT void init();

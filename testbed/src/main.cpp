@@ -1,8 +1,19 @@
-#include <KawanEngine/KawanEngine.h>
+#include <KawanEngine/EntryPoint.h>
+#include <iostream>
 
-int main()
+class TestApp : public Application
 {
-    Kawan::KawanEngine engine;
-    engine.init();
-    engine.shutdown();
+public:
+	bool Start()
+	{
+		std::cout << "Starting Application" << std::endl;
+		return true;
+	}
+};
+
+Application* CreateApplication()
+{
+	std::cout << "Creating Application" << std::endl;
+	TestApp* userApp = new TestApp;
+	return userApp;
 }
