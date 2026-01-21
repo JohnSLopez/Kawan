@@ -1,12 +1,12 @@
 #include "KawanEngine/KawanEngine.h"
 #include <iostream>
 
-void Kawan::KawanEngine::init()
+void KawanEngine::Init()
 {
 	std::cout << "Initializing Engine" << std::endl;
 }
 
-void Kawan::KawanEngine::shutdown()
+void KawanEngine::Shutdown()
 {
 	std::cout << "Shutting engine down" << std::endl;
 }

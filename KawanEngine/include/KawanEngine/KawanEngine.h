@@ -2,12 +2,20 @@
 
 #include "defines.h"
 
-namespace Kawan
+class KawanEngine
 {
-	class KawanEngine
+public:
+	bool _isInitialized { false };
+
+	KW_EXPORT static KawanEngine& Instance()
 	{
-	public:
-		KW_EXPORT void init();
-		KW_EXPORT void shutdown();
-	};
-}
+		static KawanEngine _instance;
+		return _instance;
+	}
+
+	KW_EXPORT void Init();
+	KW_EXPORT void Shutdown();
+
+private:
+	KawanEngine() {}
+};
