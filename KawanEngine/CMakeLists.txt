@@ -14,7 +14,7 @@ set(ENGINE_INCLUDE_DIRS
 )
 
 set(ENGINE_LINK_DIR
-    "Vulkan::Vulkan"    
+    "Vulkan::Vulkan"
 )
 
 add_library(${ENGINE_TARGET_NAME} SHARED ${ENGINE_SRCS})
