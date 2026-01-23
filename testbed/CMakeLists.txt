@@ -1,5 +1,5 @@
 set(TEST_SRCS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/TestApp.cpp"
 )
 
 set(TEST_INCLUDE_DIRS
