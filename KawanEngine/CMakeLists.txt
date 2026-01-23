@@ -3,6 +3,8 @@ find_package(Vulkan REQUIRED)
 set(ENGINE_SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/KawanEngine/KawanEngine.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/KawanEngine.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/KawanEngine/Renderer/Vulkan/Renderer.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer/Vulkan/Renderer.cpp"
 )
 
 set(ENGINE_INCLUDE_DIRS

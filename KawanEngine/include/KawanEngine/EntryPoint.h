@@ -18,5 +18,5 @@ int main()
 
 	if (!app->Shutdown())
 		return -1;
-	KawanEngine::Instance().Init();
+	KawanEngine::Instance().Shutdown();
 }

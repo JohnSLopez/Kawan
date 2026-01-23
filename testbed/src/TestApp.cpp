@@ -3,7 +3,7 @@
 
 bool TestApp::Start()
 {
-	std::cout << "Starting Application" << std::endl;
+	std::cout << "Starting Application" << std::endl; 
 	return true;
 }
 
