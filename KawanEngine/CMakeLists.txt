@@ -1,5 +1,8 @@
 find_package(Vulkan REQUIRED)
 
+set(SDL3_DIR "${THIRD_PARTY_DIR}/SDL3/cmake")
+find_package(SDL3 REQUIRED)
+
 set(ENGINE_SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/KawanEngine/KawanEngine.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/KawanEngine.cpp"
@@ -9,12 +12,13 @@ set(ENGINE_SRCS
 
 set(ENGINE_INCLUDE_DIRS
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    "{Vulkan_INCLUDE_DIRS}"
+    "${Vulkan_INCLUDE_DIRS}"
     "${THIRD_PARTY_DIR}/VkBootstrap"
 )
 
 set(ENGINE_LINK_DIR
     "Vulkan::Vulkan"
+    "SDL3::SDL3"
 )
 
 add_library(${ENGINE_TARGET_NAME} SHARED ${ENGINE_SRCS})
