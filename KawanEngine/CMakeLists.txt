@@ -1,8 +1,5 @@
 find_package(Vulkan REQUIRED)
 
-set(SDL3_DIR "${THIRD_PARTY_DIR}/SDL3/cmake")
-find_package(SDL3 REQUIRED)
-
 set(ENGINE_SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/KawanEngine/KawanEngine.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/KawanEngine.cpp"
