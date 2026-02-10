@@ -26,7 +26,7 @@ private:
 	VkSurfaceKHR _surface;
 	//SDL_Window* _window;
 
-	void InitVulkan();
+	void InitRenderer();
 	void InitSwapchain();
 	void InitCommands();
 	void InitSyncStructures();
