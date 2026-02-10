@@ -9,13 +9,19 @@ int main()
 {
 	Application* app = CreateApplication();
 
+	//Start user app and initialize engine if successful
 	if (!app->Start())
 		return -1;
 	KawanEngine::Instance().Init();
 
-	if (!app->Run())
-		return -1;
+	//Main loop
+	while (KawanEngine::Instance()._isRunning)
+	{
+		if (!app->Run())
+			return -1;
+	}
 
+	//Shutdown app and engine
 	if (!app->Shutdown())
 		return -1;
 	KawanEngine::Instance().Shutdown();

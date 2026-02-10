@@ -6,6 +6,7 @@ class KawanEngine
 {
 public:
 	bool _isInitialized { false };
+	bool _isRunning{ false };
 
 	KW_EXPORT static KawanEngine& Instance()
 	{

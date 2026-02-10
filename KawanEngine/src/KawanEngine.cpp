@@ -6,6 +6,7 @@ void KawanEngine::Init()
 {
 	std::cout << "Initializing Engine" << std::endl;
 	Renderer::Instance().Init();
+	_isRunning = true;
 }
 
 void KawanEngine::Shutdown()
