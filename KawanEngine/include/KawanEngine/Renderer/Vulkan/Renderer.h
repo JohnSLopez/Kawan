@@ -5,14 +5,15 @@
 
 #define SDL_MAIN_HANDLED
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_vulkan.h>
 
 class Renderer
 {
 public:
 	KW_EXPORT static Renderer& Instance()
 	{
-		static Renderer _instance;
-		return _instance;
+		static Renderer _rendererInstance;
+		return _rendererInstance;
 	}
 
 	KW_EXPORT void Init();
@@ -24,7 +25,6 @@ private:
 	VkPhysicalDevice _userGPU;
 	VkDevice _device;
 	VkSurfaceKHR _surface;
-	//SDL_Window* _window;
 
 	void InitRenderer();
 	void InitSwapchain();

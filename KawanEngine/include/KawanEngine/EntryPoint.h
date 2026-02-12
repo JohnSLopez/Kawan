@@ -15,11 +15,14 @@ int main()
 	KawanEngine::Instance().Init();
 
 	//Main loop
-	while (KawanEngine::Instance()._isRunning)
+	/*while (KawanEngine::Instance()._isRunning)
 	{
 		if (!app->Run())
 			return -1;
-	}
+	}*/
+
+	if (!app->Run())
+		return -1;
 
 	//Shutdown app and engine
 	if (!app->Shutdown())

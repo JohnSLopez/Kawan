@@ -1,6 +1,6 @@
 #include "KawanEngine/KawanEngine.h"
 #include <iostream>
-#include <KawanEngine/Renderer/Vulkan/VkRenderer.h>
+#include <KawanEngine/Renderer/Vulkan/Renderer.h>
 
 void KawanEngine::Init()
 {
