@@ -33,7 +33,8 @@ void Renderer::InitRenderer()
 	std::vector<const char*> userExtensions = { VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME };
 	ExtensionInitializer extensions(userExtensions);
 	InitInstance(&_instance, "Vulkan Renderer", VK_API_VERSION_1_3, extensions.GetExtensionCount(), extensions.GetExtensions());
-
+	
+	InitDevice(_device, _instance);
 }
 
 void Renderer::InitSwapchain()
