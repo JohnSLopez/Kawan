@@ -2,10 +2,12 @@
 
 #include "defines.h"
 #include <vulkan/vulkan.h>
+#include "Initializers.h"
 
 #define SDL_MAIN_HANDLED
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
+
 
 class Renderer
 {
@@ -25,6 +27,8 @@ private:
 	VkPhysicalDevice _userGPU;
 	VkDevice _device;
 	VkSurfaceKHR _surface;
+	VkQueue _queue;
+	VmaAllocator _allocator;
 
 	void InitRenderer();
 	void InitSwapchain();
