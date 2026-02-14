@@ -27,7 +27,7 @@ void InitInstance(VkInstance* instance, const char* appName, uint32_t apiVersion
 }
 
 //TODO: Refactor to add options for features/queues
-void InitDevice(VkDevice& device, VkInstance& instance, VkQueue& queue)
+void InitDevice(VkDevice& device, VkPhysicalDevice& physicalDevice, VkInstance& instance, VkQueue& queue)
 {
 	uint32_t deviceCount{ 0 };
 	Check(vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr));
@@ -106,24 +106,48 @@ void InitDevice(VkDevice& device, VkInstance& instance, VkQueue& queue)
 		deviceCreateInfo.pEnabledFeatures = &enabledVk10Features
 	};
 
+	physicalDevice = devices[0];
 	Check(vkCreateDevice(devices[0], &deviceCreateInfo, nullptr, &device));
 	vkGetDeviceQueue(device, queueFamily, 0, &queue);
 }
 
 void InitVMA(VmaAllocator allocator, VkPhysicalDevice physicalDevice, VkDevice device, VkInstance instance)
 {
+	//For some reason, every member of the vma structs need to be manually initialized
+	//thanks to: https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator/issues/56
 	VmaVulkanFunctions vkFunctions;
-	vkFunctions.vkGetInstanceProcAddr = vkGetInstanceProcAddr;
-	vkFunctions.vkGetDeviceProcAddr = vkGetDeviceProcAddr;
+	vkFunctions.vkAllocateMemory = vkAllocateMemory;
+	vkFunctions.vkBindBufferMemory = vkBindBufferMemory;
+	vkFunctions.vkBindImageMemory = vkBindImageMemory;
+	vkFunctions.vkCmdCopyBuffer = vkCmdCopyBuffer;
+	vkFunctions.vkCreateBuffer = vkCreateBuffer;
 	vkFunctions.vkCreateImage = vkCreateImage;
+	vkFunctions.vkDestroyBuffer = vkDestroyBuffer;
+	vkFunctions.vkDestroyImage = vkDestroyImage;
+	vkFunctions.vkFlushMappedMemoryRanges = vkFlushMappedMemoryRanges;
+	vkFunctions.vkFreeMemory = vkFreeMemory;
+	vkFunctions.vkGetBufferMemoryRequirements = vkGetBufferMemoryRequirements;
+	vkFunctions.vkGetImageMemoryRequirements = vkGetImageMemoryRequirements;
+	vkFunctions.vkGetPhysicalDeviceMemoryProperties = vkGetPhysicalDeviceMemoryProperties;
+	vkFunctions.vkGetPhysicalDeviceProperties = vkGetPhysicalDeviceProperties;
+	vkFunctions.vkInvalidateMappedMemoryRanges = vkInvalidateMappedMemoryRanges;
+	vkFunctions.vkMapMemory = vkMapMemory;
+	vkFunctions.vkUnmapMemory = vkUnmapMemory;
+	vkFunctions.vkGetBufferMemoryRequirements2KHR = 0;  //(PFN_vkGetBufferMemoryRequirements2KHR)vkGetBufferMemoryRequirements2KHR;
+	vkFunctions.vkGetImageMemoryRequirements2KHR = 0;  //(PFN_vkGetImageMemoryRequirements2KHR)vkGetImageMemoryRequirements2KHR;
 
 	VmaAllocatorCreateInfo allocatorCreateInfo;
 	allocatorCreateInfo.flags = VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
 	allocatorCreateInfo.physicalDevice = physicalDevice;
 	allocatorCreateInfo.device = device;
+	allocatorCreateInfo.preferredLargeHeapBlockSize = 0;
+	allocatorCreateInfo.pAllocationCallbacks = VMA_NULL;
+	allocatorCreateInfo.pDeviceMemoryCallbacks = VMA_NULL;
+	allocatorCreateInfo.pHeapSizeLimit = VMA_NULL;
 	allocatorCreateInfo.pVulkanFunctions = &vkFunctions;
 	allocatorCreateInfo.instance = instance;
-	//allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_4;
+	allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_4;
+	allocatorCreateInfo.pTypeExternalMemoryHandleTypes = VMA_NULL;
 
 	Check(vmaCreateAllocator(&allocatorCreateInfo, &allocator));
 }

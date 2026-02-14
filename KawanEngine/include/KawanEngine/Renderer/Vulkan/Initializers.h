@@ -27,7 +27,7 @@ static inline void Check(bool result) {
 
 void InitInstance(VkInstance* instance, const char* appName, uint32_t apiVersion, uint32_t enabledExtensionCount, const char* const* ppEnabledExtensionNames);
 
-void InitDevice(VkDevice& device, VkInstance& instance, VkQueue& queue);
+void InitDevice(VkDevice& device, VkPhysicalDevice& physicalDevice, VkInstance& instance, VkQueue& queue);
 
 void InitVMA(VmaAllocator allocator, VkPhysicalDevice physicalDevice, VkDevice device, VkInstance instance);
 

@@ -34,8 +34,8 @@ void Renderer::InitRenderer()
 	ExtensionInitializer extensions(userExtensions);
 	InitInstance(&_instance, "Vulkan Renderer", VK_API_VERSION_1_3, extensions.GetExtensionCount(), extensions.GetExtensions());
 	
-	InitDevice(_device, _instance, _queue);
-	//InitVMA(_allocator, _userGPU, _device, _instance);
+	InitDevice(_device, _userGPU, _instance, _queue);
+	InitVMA(_allocator, _userGPU, _device, _instance);
 }
 
 void Renderer::InitSwapchain()
