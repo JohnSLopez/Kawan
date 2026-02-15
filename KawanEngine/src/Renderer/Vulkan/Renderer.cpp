@@ -11,7 +11,6 @@ void Renderer::Init()
 {
 	std::cout << "Initializing renderer" << std::endl;
 
-	//TODO: Move this into engine instead of Renderer
 	SDL_Init(SDL_INIT_VIDEO);
 
 	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN);

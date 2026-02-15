@@ -1,6 +1,9 @@
 #pragma once
 
 #include "defines.h"
+#include <memory>
+
+class Renderer;
 
 class KawanEngine
 {
@@ -17,6 +20,8 @@ public:
 private:
 	bool _isInitialized{ false };
 	bool _isRunning{ false };
+
+	std::shared_ptr<Renderer> _renderer;
 
 	KawanEngine() {}
 };

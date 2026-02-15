@@ -1,18 +1,13 @@
 #pragma once
 
 #include "defines.h"
+#include <memory>
 #include <vma/vk_mem_alloc.h>
 #include <vulkan/vulkan.h>
 
 class Renderer
 {
 public:
-	KW_EXPORT static Renderer& Instance()
-	{
-		static Renderer _rendererInstance;
-		return _rendererInstance;
-	}
-
 	KW_EXPORT void Init();
 	KW_EXPORT void Shutdown();
 

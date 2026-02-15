@@ -5,12 +5,14 @@
 void KawanEngine::Init()
 {
 	std::cout << "Initializing Engine" << std::endl;
-	Renderer::Instance().Init();
+
+	_renderer = std::make_shared<Renderer>();
+	_renderer->Init();
 	_isRunning = true;
 }
 
 void KawanEngine::Shutdown()
 {
 	std::cout << "Shutting engine down" << std::endl;
-	Renderer::Instance().Shutdown();
+	_renderer->Shutdown();
 }
