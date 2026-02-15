@@ -1,5 +1,22 @@
 #define VMA_IMPLEMENTATION
 #include "KawanEngine/Renderer/Vulkan/Initializers.h"
+#include <SDL3/SDL_vulkan.h>
+
+static inline void Check(VkResult result)
+{
+	if (result != VK_SUCCESS) {
+		std::cerr << "Vulkan call returned an error (" << result << ")\n";
+		exit(result);
+	}
+}
+
+static inline void Check(bool result)
+{
+	if (result != true) {
+		std::cerr << "Vulkan call returned an error (" << result << ")\n";
+		exit(result);
+	}
+}
 
 void InitInstance(VkInstance* instance, const char* appName, uint32_t apiVersion, uint32_t enabledExtensionCount, const char* const* ppEnabledExtensionNames)
 {
@@ -150,4 +167,39 @@ void InitVMA(VmaAllocator allocator, VkPhysicalDevice physicalDevice, VkDevice d
 	allocatorCreateInfo.pTypeExternalMemoryHandleTypes = VMA_NULL;
 
 	Check(vmaCreateAllocator(&allocatorCreateInfo, &allocator));
+}
+
+ExtensionInitializer::ExtensionInitializer(const std::vector<const char*>& userExtensions)
+{
+	//Get extensions from SDL
+	uint32_t instanceExtensionsCount{ 0 };
+	const char* const* instanceExtensions{ SDL_Vulkan_GetInstanceExtensions(&instanceExtensionsCount) };
+
+	//Allocate memory for extensions
+	extensionCount = instanceExtensionsCount + userExtensions.size();
+	extensions = (const char**)SDL_malloc(extensionCount * sizeof(const char*));
+
+	//Add user defined extensions to beginning of extensions memory
+	for (int i = 0; i < userExtensions.size(); i++)
+	{
+		extensions[i] = userExtensions[i];
+	}
+
+	//Copy SDL Instance extensions to the end of extensions memory
+	SDL_memcpy(&extensions[userExtensions.size()], instanceExtensions, instanceExtensionsCount * sizeof(const char*));
+}
+
+ExtensionInitializer::~ExtensionInitializer()
+{
+	SDL_free(extensions);
+}
+
+const char** ExtensionInitializer::GetExtensions() const
+{
+	return extensions;
+}
+
+const int ExtensionInitializer::GetExtensionCount() const
+{
+	return extensionCount;
 }

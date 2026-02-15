@@ -5,9 +5,6 @@
 class KawanEngine
 {
 public:
-	bool _isInitialized { false };
-	bool _isRunning{ false };
-
 	KW_EXPORT static KawanEngine& Instance()
 	{
 		static KawanEngine _instance;
@@ -18,5 +15,8 @@ public:
 	KW_EXPORT void Shutdown();
 
 private:
+	bool _isInitialized{ false };
+	bool _isRunning{ false };
+
 	KawanEngine() {}
 };

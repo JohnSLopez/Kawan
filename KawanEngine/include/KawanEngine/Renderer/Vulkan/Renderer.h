@@ -1,13 +1,8 @@
 #pragma once
 
 #include "defines.h"
+#include <vma/vk_mem_alloc.h>
 #include <vulkan/vulkan.h>
-#include "Initializers.h"
-
-#define SDL_MAIN_HANDLED
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_vulkan.h>
-
 
 class Renderer
 {

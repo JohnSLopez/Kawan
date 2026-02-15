@@ -1,6 +1,10 @@
 #include "KawanEngine/Renderer/Vulkan/Renderer.h"
-//#include "KawanEngine/Renderer/Vulkan/Initializers.h"
+#include "KawanEngine/Renderer/Vulkan/Initializers.h"
 #include <iostream>
+
+#define SDL_MAIN_HANDLED
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_vulkan.h>
 #include <vector>
 
 void Renderer::Init()
