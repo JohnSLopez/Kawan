@@ -9,7 +9,15 @@ void KawanEngine::Init()
 
 	_renderer = std::make_shared<Renderer>();
 	_renderer->Init();
-	_isRunning = true;
+	KawanEngine::SetIsRunning(true);
+}
+
+void KawanEngine::UpdateSubsystems()
+{
+	if (_renderer == nullptr)
+		return;
+
+	_renderer->Update();
 }
 
 void KawanEngine::Shutdown()
@@ -18,7 +26,17 @@ void KawanEngine::Shutdown()
 	_renderer->Shutdown();
 }
 
+const bool KawanEngine::IsRunning() const
+{
+	return KawanEngine::Instance()._isRunning;
+}
+
 KW_EXPORT const glm::vec2& KawanEngine::GetWindowSize() const
 {
 	return glm::vec2(_windowWidth, _windowHeight);
+}
+
+void KawanEngine::SetIsRunning(bool value)
+{
+	KawanEngine::Instance()._isRunning = value;
 }

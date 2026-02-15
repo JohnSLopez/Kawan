@@ -15,10 +15,9 @@ void Renderer::Init()
 
 	SDL_Init(SDL_INIT_VIDEO);
 
-	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN);
+	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE);
 
-
-
+	//TODO: Get window information from Application
 	SDL_Window* _window = SDL_CreateWindow(
 		"Kawan Engine",
 		KawanEngine::Instance().GetWindowSize().x,
@@ -27,6 +26,19 @@ void Renderer::Init()
 	);
 
 	InitRenderer();
+}
+
+void Renderer::Update()
+{
+	SDL_Event e;
+	SDL_PollEvent(&e);
+	
+	if (e.type == SDL_EVENT_QUIT)
+	{
+		KawanEngine::Instance().SetIsRunning(false);
+	}
+
+	//std::cout << KawanEngine::Instance().IsRunning() << std::endl;
 }
 
 void Renderer::Shutdown()

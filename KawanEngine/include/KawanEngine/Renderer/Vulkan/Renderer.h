@@ -8,8 +8,9 @@
 class Renderer
 {
 public:
-	KW_EXPORT void Init();
-	KW_EXPORT void Shutdown();
+	void Init();
+	void Update();
+    void Shutdown();
 
 private:
 	VkInstance _instance;

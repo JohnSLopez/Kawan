@@ -15,17 +15,15 @@ int main()
 	KawanEngine::Instance().Init();
 
 	//Main loop
-	/*while (KawanEngine::Instance()._isRunning)
+	while (KawanEngine::Instance().IsRunning())
 	{
+		KawanEngine::Instance().UpdateSubsystems();
 		if (!app->Run())
 			return -1;
-	}*/
-
-	if (!app->Run())
-		return -1;
+	}
 
 	//Shutdown app and engine
+	KawanEngine::Instance().Shutdown();
 	if (!app->Shutdown())
 		return -1;
-	KawanEngine::Instance().Shutdown();
 }

@@ -10,7 +10,6 @@ bool TestApp::Start()
 bool TestApp::Run()
 {
 	//Put game loop here
-	std::cout << "Running Application" << std::endl;
 	return true;
 }
 
