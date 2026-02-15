@@ -2,7 +2,9 @@
 #include "KawanEngine/Renderer/Vulkan/Initializers.h"
 #include <SDL3/SDL_vulkan.h>
 
-static inline void Check(VkResult result)
+//TODO: Remove Vk and Vma create functions so user can adjust settings before calling them themselves
+
+void Check(VkResult result)
 {
 	if (result != VK_SUCCESS) {
 		std::cerr << "Vulkan call returned an error (" << result << ")\n";
@@ -10,7 +12,7 @@ static inline void Check(VkResult result)
 	}
 }
 
-static inline void Check(bool result)
+void Check(bool result)
 {
 	if (result != true) {
 		std::cerr << "Vulkan call returned an error (" << result << ")\n";
@@ -164,6 +166,32 @@ void InitVMA(VmaAllocator allocator, VkPhysicalDevice physicalDevice, VkDevice d
 	allocatorCreateInfo.pTypeExternalMemoryHandleTypes = VMA_NULL;
 
 	Check(vmaCreateAllocator(&allocatorCreateInfo, &allocator));
+}
+
+VkSwapchainCreateInfoKHR InitSwapchain(
+	const VkFormat imageFormat, 
+	VkSurfaceKHR& surface, 
+	VkSurfaceCapabilitiesKHR surfaceCapabilities, 
+	VkExtent2D extent)
+{
+	VkSwapchainCreateInfoKHR swapchainCI;
+	swapchainCI.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+	swapchainCI.pNext = nullptr;
+	swapchainCI.flags = NULL;
+	swapchainCI.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	swapchainCI.clipped = VK_TRUE;
+	swapchainCI.oldSwapchain = VK_NULL_HANDLE;
+	swapchainCI.surface = surface;
+	swapchainCI.minImageCount = surfaceCapabilities.minImageCount;
+	swapchainCI.imageFormat = imageFormat;
+	swapchainCI.imageColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
+	swapchainCI.imageExtent = extent;
+	swapchainCI.imageArrayLayers = 1;
+	swapchainCI.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+	swapchainCI.preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+	swapchainCI.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+	swapchainCI.presentMode = VK_PRESENT_MODE_FIFO_KHR;
+	return swapchainCI;
 }
 
 ExtensionInitializer::ExtensionInitializer(const std::vector<const char*>& userExtensions)

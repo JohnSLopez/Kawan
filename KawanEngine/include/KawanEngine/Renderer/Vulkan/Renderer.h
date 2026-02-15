@@ -5,6 +5,8 @@
 #include <vma/vk_mem_alloc.h>
 #include <vulkan/vulkan.h>
 
+struct SDL_Window;
+
 class Renderer
 {
 public:
@@ -20,9 +22,11 @@ private:
 	VkSurfaceKHR _surface;
 	VkQueue _queue;
 	VmaAllocator _allocator;
+	VkSurfaceCapabilitiesKHR _surfaceCapabilities;
+	VkSwapchainKHR _swapchain;
+	SDL_Window* _window;
 
 	void InitRenderer();
-	void InitSwapchain();
 	void InitCommands();
 	void InitSyncStructures();
 };

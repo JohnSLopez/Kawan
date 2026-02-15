@@ -18,7 +18,7 @@ void Renderer::Init()
 	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE);
 
 	//TODO: Get window information from Application
-	SDL_Window* _window = SDL_CreateWindow(
+	_window = SDL_CreateWindow(
 		"Kawan Engine",
 		KawanEngine::Instance().GetWindowSize().x,
 		KawanEngine::Instance().GetWindowSize().y,
@@ -37,8 +37,6 @@ void Renderer::Update()
 	{
 		KawanEngine::Instance().SetIsRunning(false);
 	}
-
-	//std::cout << KawanEngine::Instance().IsRunning() << std::endl;
 }
 
 void Renderer::Shutdown()
@@ -55,11 +53,17 @@ void Renderer::InitRenderer()
 	
 	InitDevice(_device, _userGPU, _instance, _queue);
 	InitVMA(_allocator, _userGPU, _device, _instance);
-}
 
-void Renderer::InitSwapchain()
-{
+	Check(SDL_Vulkan_CreateSurface(_window, _instance, nullptr, &_surface));
+	Check(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(_userGPU, _surface, &_surfaceCapabilities));
 
+	VkExtent2D extent
+	{
+		KawanEngine::Instance().GetWindowSize().x,
+		KawanEngine::Instance().GetWindowSize().y
+	};
+	VkSwapchainCreateInfoKHR swapchainCI = InitSwapchain(VK_FORMAT_B8G8R8A8_SRGB, _surface, _surfaceCapabilities, extent);
+	Check(vkCreateSwapchainKHR(_device, &swapchainCI, nullptr, &_swapchain));
 }
 
 void Renderer::InitCommands()
