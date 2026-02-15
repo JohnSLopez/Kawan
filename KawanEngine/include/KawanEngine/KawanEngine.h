@@ -2,6 +2,7 @@
 
 #include "defines.h"
 #include <memory>
+#include <glm/fwd.hpp>
 
 class Renderer;
 
@@ -17,7 +18,11 @@ public:
 	KW_EXPORT void Init();
 	KW_EXPORT void Shutdown();
 
+	KW_EXPORT const glm::vec2& GetWindowSize() const;
+
 private:
+	uint16_t _windowWidth = 1920 / 2;
+	uint16_t _windowHeight = 1080 / 2;
 	bool _isInitialized{ false };
 	bool _isRunning{ false };
 

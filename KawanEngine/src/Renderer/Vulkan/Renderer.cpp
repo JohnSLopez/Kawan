@@ -1,11 +1,13 @@
 #include "KawanEngine/Renderer/Vulkan/Renderer.h"
 #include "KawanEngine/Renderer/Vulkan/Initializers.h"
+#include "KawanEngine/KawanEngine.h"
 #include <iostream>
 
 #define SDL_MAIN_HANDLED
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
 #include <vector>
+#include <glm/glm.hpp>
 
 void Renderer::Init()
 {
@@ -15,10 +17,12 @@ void Renderer::Init()
 
 	SDL_WindowFlags windowFlags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN);
 
+
+
 	SDL_Window* _window = SDL_CreateWindow(
 		"Kawan Engine",
-		1920,
-		1080,
+		KawanEngine::Instance().GetWindowSize().x,
+		KawanEngine::Instance().GetWindowSize().y,
 		windowFlags
 	);
 
