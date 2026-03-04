@@ -4,6 +4,8 @@
 #include <memory>
 #include <glm/fwd.hpp>
 
+#define RENDERER_VULKAN
+
 class Renderer;
 
 class KawanEngine
@@ -30,6 +32,7 @@ public:
 	void SetIsRunning(bool value);
 
 private:
+	//TODO: Change this to a vec2
 	uint16_t _windowWidth = 1920 / 2;
 	uint16_t _windowHeight = 1080 / 2;
 	bool _isInitialized{ false };

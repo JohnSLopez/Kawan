@@ -1,7 +1,12 @@
-#include "KawanEngine/Renderer/Vulkan/Renderer.h"
-#include "KawanEngine/Renderer/Vulkan/Initializers.h"
 #include "KawanEngine/KawanEngine.h"
 #include <iostream>
+
+#ifdef RENDERER_VULKAN
+#include "KawanEngine/Renderer/Vulkan/Renderer.h"
+#include "KawanEngine/Renderer/Vulkan/Initializers.h"
+#elif RENDERER_OPENGL
+#include "KawanEngine/Renderer/OpenGL/Renderer.h"
+#endif
 
 #define SDL_MAIN_HANDLED
 #include <SDL3/SDL.h>
