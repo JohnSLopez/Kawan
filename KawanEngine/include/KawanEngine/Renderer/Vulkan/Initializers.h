@@ -1,9 +1,12 @@
 #pragma once
 
 #include <cstdint>
+#include <glm/fwd.hpp>
 #include <iostream>
 #include <vector>
 #include <vma/vk_mem_alloc.h>
+
+#define VK_NO_PROTOTYPES
 #include <vulkan/vulkan.h>
 
 void Check(VkResult result);
@@ -11,12 +14,14 @@ void Check(bool result);
 
 void InitInstance(VkInstance* instance, const char* appName, uint32_t apiVersion, uint32_t enabledExtensionCount, const char* const* ppEnabledExtensionNames);
 void InitDevice(VkDevice& device, VkPhysicalDevice& physicalDevice, VkInstance& instance, VkQueue& queue);
-void InitVMA(VmaAllocator allocator, VkPhysicalDevice physicalDevice, VkDevice device, VkInstance instance);
+void InitVMA(VmaAllocator& allocator, VkPhysicalDevice physicalDevice, VkDevice device, VkInstance instance);
 VkSwapchainCreateInfoKHR InitSwapchain(
 	const VkFormat imageFormat, 
 	VkSurfaceKHR& surface, 
 	VkSurfaceCapabilitiesKHR surfaceCapabilities, 
 	VkExtent2D extent);
+VkImageCreateInfo InitDepthAttachment(const VkPhysicalDevice& userGpu, glm::vec2 windowSize);
+VkImageViewCreateInfo InitDepthAttachmentView(const VkImage& depthImage, const VkFormat& depthFormat);
 
 //Initializes extensions provided by user along with necessary extensions grabbed by SDL
 // 

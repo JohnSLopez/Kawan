@@ -3,6 +3,8 @@
 #include "defines.h"
 #include <memory>
 #include <vma/vk_mem_alloc.h>
+
+#define VK_NO_PROTOTYPES
 #include <vulkan/vulkan.h>
 
 struct SDL_Window;
@@ -25,6 +27,10 @@ private:
 	VkSurfaceCapabilitiesKHR _surfaceCapabilities;
 	VkSwapchainKHR _swapchain;
 	SDL_Window* _window;
+
+	VkImage _depthImage;
+	VmaAllocation _depthImageAllocation;
+	VkImageView _depthImageView;
 
 	void InitRenderer();
 	void InitCommands();

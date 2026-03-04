@@ -1,6 +1,10 @@
 #define VMA_IMPLEMENTATION
 #include "KawanEngine/Renderer/Vulkan/Initializers.h"
 #include <SDL3/SDL_vulkan.h>
+#include <glm/glm.hpp>
+
+#define VMA_STATIC_VULKAN_FUNCTIONS 0
+#define VMA_DYNAMIC_VULKAN_FUNCTIONS 1
 
 //TODO: Remove Vk and Vma create functions so user can adjust settings before calling them themselves
 
@@ -127,43 +131,18 @@ void InitDevice(VkDevice& device, VkPhysicalDevice& physicalDevice, VkInstance& 
 	vkGetDeviceQueue(device, queueFamily, 0, &queue);
 }
 
-void InitVMA(VmaAllocator allocator, VkPhysicalDevice physicalDevice, VkDevice device, VkInstance instance)
+void InitVMA(VmaAllocator& allocator, VkPhysicalDevice physicalDevice, VkDevice device, VkInstance instance)
 {
-	//For some reason, every member of the vma structs need to be manually initialized
-	//thanks to: https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator/issues/56
-	VmaVulkanFunctions vkFunctions;
-	vkFunctions.vkAllocateMemory = vkAllocateMemory;
-	vkFunctions.vkBindBufferMemory = vkBindBufferMemory;
-	vkFunctions.vkBindImageMemory = vkBindImageMemory;
-	vkFunctions.vkCmdCopyBuffer = vkCmdCopyBuffer;
-	vkFunctions.vkCreateBuffer = vkCreateBuffer;
-	vkFunctions.vkCreateImage = vkCreateImage;
-	vkFunctions.vkDestroyBuffer = vkDestroyBuffer;
-	vkFunctions.vkDestroyImage = vkDestroyImage;
-	vkFunctions.vkFlushMappedMemoryRanges = vkFlushMappedMemoryRanges;
-	vkFunctions.vkFreeMemory = vkFreeMemory;
-	vkFunctions.vkGetBufferMemoryRequirements = vkGetBufferMemoryRequirements;
-	vkFunctions.vkGetImageMemoryRequirements = vkGetImageMemoryRequirements;
-	vkFunctions.vkGetPhysicalDeviceMemoryProperties = vkGetPhysicalDeviceMemoryProperties;
-	vkFunctions.vkGetPhysicalDeviceProperties = vkGetPhysicalDeviceProperties;
-	vkFunctions.vkInvalidateMappedMemoryRanges = vkInvalidateMappedMemoryRanges;
-	vkFunctions.vkMapMemory = vkMapMemory;
-	vkFunctions.vkUnmapMemory = vkUnmapMemory;
-	vkFunctions.vkGetBufferMemoryRequirements2KHR = 0;  //(PFN_vkGetBufferMemoryRequirements2KHR)vkGetBufferMemoryRequirements2KHR;
-	vkFunctions.vkGetImageMemoryRequirements2KHR = 0;  //(PFN_vkGetImageMemoryRequirements2KHR)vkGetImageMemoryRequirements2KHR;
+	VmaVulkanFunctions vkFunctions = {};
+	vkFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
+	vkFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
 
-	VmaAllocatorCreateInfo allocatorCreateInfo;
+	VmaAllocatorCreateInfo allocatorCreateInfo = {};
 	allocatorCreateInfo.flags = VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
 	allocatorCreateInfo.physicalDevice = physicalDevice;
 	allocatorCreateInfo.device = device;
-	allocatorCreateInfo.preferredLargeHeapBlockSize = 0;
-	allocatorCreateInfo.pAllocationCallbacks = VMA_NULL;
-	allocatorCreateInfo.pDeviceMemoryCallbacks = VMA_NULL;
-	allocatorCreateInfo.pHeapSizeLimit = VMA_NULL;
 	allocatorCreateInfo.pVulkanFunctions = &vkFunctions;
 	allocatorCreateInfo.instance = instance;
-	allocatorCreateInfo.vulkanApiVersion = VK_API_VERSION_1_4;
-	allocatorCreateInfo.pTypeExternalMemoryHandleTypes = VMA_NULL;
 
 	Check(vmaCreateAllocator(&allocatorCreateInfo, &allocator));
 }
@@ -190,9 +169,73 @@ VkSwapchainCreateInfoKHR InitSwapchain(
 	swapchainCI.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 	swapchainCI.preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
 	swapchainCI.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+
+	//VSync mode guaranteed to be available everywhere
 	swapchainCI.presentMode = VK_PRESENT_MODE_FIFO_KHR;
 	return swapchainCI;
 }
+
+VkImageViewCreateInfo InitDepthAttachmentView(const VkImage& depthImage, const VkFormat& depthFormat)
+{
+	VkImageViewCreateInfo depthViewCI = {};
+	depthViewCI.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	depthViewCI.image = depthImage;
+	depthViewCI.viewType = VK_IMAGE_VIEW_TYPE_2D;
+	depthViewCI.format = depthFormat;
+
+	VkImageSubresourceRange subresourceRange = {};
+	subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+	subresourceRange.levelCount = 1;
+	subresourceRange.layerCount = 1;
+	depthViewCI.subresourceRange = subresourceRange;
+
+	return depthViewCI;
+}
+
+VkImageCreateInfo InitDepthAttachment(const VkPhysicalDevice& userGpu, glm::vec2 windowSize)
+{
+	std::vector<VkFormat> depthFormats{ VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
+	VkFormat depthFormat{ VK_FORMAT_UNDEFINED };
+
+	for (VkFormat& format : depthFormats)
+	{
+		VkFormatProperties2 formatProperties2;
+		formatProperties2.sType = VK_STRUCTURE_TYPE_FORMAT_PROPERTIES_2;
+		formatProperties2.pNext = nullptr;
+
+		VkFormatProperties formatProperties = {};
+		formatProperties2.formatProperties = formatProperties;
+
+
+		vkGetPhysicalDeviceFormatProperties2(userGpu, format, &formatProperties2);
+		if (formatProperties2.formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
+		{
+			depthFormat = format;
+			break;
+		}
+	}
+
+	VkImageCreateInfo depthImageCI = {};
+	depthImageCI.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	depthImageCI.imageType = VK_IMAGE_TYPE_2D;
+	depthImageCI.format = depthFormat;
+
+	VkExtent3D extent = {};
+	extent.width = windowSize.x;
+	extent.height = windowSize.y;
+	extent.depth = 1;
+	
+	depthImageCI.extent = extent;
+	depthImageCI.mipLevels = 1;
+	depthImageCI.arrayLayers = 1;
+	depthImageCI.samples = VK_SAMPLE_COUNT_1_BIT;
+	depthImageCI.tiling = VK_IMAGE_TILING_OPTIMAL;
+	depthImageCI.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+	depthImageCI.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+	return depthImageCI;
+};
+	
 
 ExtensionInitializer::ExtensionInitializer(const std::vector<const char*>& userExtensions)
 {

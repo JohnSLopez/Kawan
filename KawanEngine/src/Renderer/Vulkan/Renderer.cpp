@@ -64,6 +64,22 @@ void Renderer::InitRenderer()
 	};
 	VkSwapchainCreateInfoKHR swapchainCI = InitSwapchain(VK_FORMAT_B8G8R8A8_SRGB, _surface, _surfaceCapabilities, extent);
 	Check(vkCreateSwapchainKHR(_device, &swapchainCI, nullptr, &_swapchain));
+
+	//Depth image create info
+	glm::vec2 windowSize = glm::vec2(KawanEngine::Instance().GetWindowSize().x, KawanEngine::Instance().GetWindowSize().y);
+	VkImageCreateInfo depthImageCI = InitDepthAttachment(_userGPU, windowSize);
+
+	VmaAllocationCreateInfo allocCI = {};
+	allocCI.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
+	allocCI.usage = VMA_MEMORY_USAGE_AUTO;
+
+	//allocator && pImageCreateInfo && pAllocationCreateInfo && pImage && pAllocation
+	Check(vmaCreateImage(_allocator, &depthImageCI, &allocCI, &_depthImage, &_depthImageAllocation, nullptr));
+
+	//depth image view creation
+	VkImageViewCreateInfo depthViewCI = InitDepthAttachmentView(_depthImage, depthImageCI.format);
+	vkCreateImageView(_device, &depthViewCI, nullptr, &_depthImageView);
+
 }
 
 void Renderer::InitCommands()
