@@ -2,13 +2,18 @@ include(CMakePrintHelpers)
 
 find_package(Vulkan REQUIRED)
 
+if(${Vulkan_FOUND})
+    MESSAGE(STATUS "Found Vulkan")
+else()
+    MESSAGE(FATAL_ERROR "VUlkan not found, make sure the VUlkan SDK is installed")
+endif()
+
+file(GLOB_RECURSE HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/**/*.h")
+file(GLOB_RECURSE CPPFILES "${CMAKE_CURRENT_SOURCE_DIR}/**/*.cpp")
+
 set(ENGINE_SRCS
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/KawanEngine/KawanEngine.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/KawanEngine.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/KawanEngine/Renderer/Vulkan/Renderer.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer/Vulkan/Renderer.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/KawanEngine/Renderer/Vulkan/Initializers.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer/Vulkan/Initializers.cpp"
+    "${HEADERS}"
+    "${CPPFILES}"
 )
 
 set(ENGINE_INCLUDE_DIRS
