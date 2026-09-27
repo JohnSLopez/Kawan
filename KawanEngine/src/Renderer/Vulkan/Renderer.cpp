@@ -89,7 +89,7 @@ void Renderer::InitRenderer()
 	VkImageViewCreateInfo depthViewCI = InitDepthAttachmentView(_depthImage, depthImageCI.format);
 	Check(vkCreateImageView(_device, &depthViewCI, nullptr, &_depthImageView));
 
-	std::filesystem::path assetPath = "C:/Users/schrulll/Desktop/Kawan/Assets/BoxUnlit.gltf";
+	std::filesystem::path assetPath = "C:/Users/schrulll/Desktop/Kawan/Assets/Triangle.gltf";
 
 	fastgltf::Parser gltfParser = fastgltf::Parser(fastgltf::Extensions::KHR_materials_unlit);
 	auto gltfFile = fastgltf::GltfDataBuffer::FromPath(assetPath);
