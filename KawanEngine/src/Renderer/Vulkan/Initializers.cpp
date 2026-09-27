@@ -26,21 +26,25 @@ void Check(bool result)
 
 void InitInstance(VkInstance* instance, const char* appName, uint32_t apiVersion, uint32_t enabledExtensionCount, const char* const* ppEnabledExtensionNames)
 {
-	VkApplicationInfo appInfo{};
-	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-	appInfo.pNext = NULL,
-	appInfo.pApplicationName = appName,
-	appInfo.apiVersion = apiVersion;
+	VkApplicationInfo appInfo
+	{
+		.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+		.pNext = NULL,
+		.pApplicationName = appName,
+		.apiVersion = apiVersion
+	};
 
-	VkInstanceCreateInfo instanceCreateInfo{};
-	instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-	instanceCreateInfo.pNext = NULL,
-	instanceCreateInfo.flags = VkInstanceCreateFlagBits::VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR,
-	instanceCreateInfo.pApplicationInfo = &appInfo,
-	instanceCreateInfo.enabledLayerCount = 0,
-	instanceCreateInfo.ppEnabledLayerNames = NULL,
-	instanceCreateInfo.enabledExtensionCount = enabledExtensionCount,
-	instanceCreateInfo.ppEnabledExtensionNames = ppEnabledExtensionNames;
+	VkInstanceCreateInfo instanceCreateInfo
+	{
+		.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+		.pNext = NULL,
+		.flags = VkInstanceCreateFlagBits::VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR,
+		.pApplicationInfo = &appInfo,
+		.enabledLayerCount = 0,
+		.ppEnabledLayerNames = NULL,
+		.enabledExtensionCount = enabledExtensionCount,
+		.ppEnabledExtensionNames = ppEnabledExtensionNames
+	};
 
 	vkCreateInstance(&instanceCreateInfo, nullptr, instance);
 	//Check(vkCreateInstance(&instanceCreateInfo, nullptr, instance));
@@ -56,8 +60,8 @@ void InitDevice(VkDevice& device, VkPhysicalDevice& physicalDevice, VkInstance& 
 
 	VkPhysicalDeviceProperties2 deviceProperties
 	{
-		deviceProperties.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2,
-		deviceProperties.pNext = nullptr
+		.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2,
+		.pNext = nullptr
 	};
 	vkGetPhysicalDeviceProperties2(devices[0], &deviceProperties);
 
@@ -79,51 +83,52 @@ void InitDevice(VkDevice& device, VkPhysicalDevice& physicalDevice, VkInstance& 
 	const float queuePriorities{ 1.0f };
 	VkDeviceQueueCreateInfo queueCreateInfo
 	{
-		queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-		queueCreateInfo.pNext = nullptr,
-		queueCreateInfo.flags = NULL,
-		queueCreateInfo.queueFamilyIndex = queueFamily,
-		queueCreateInfo.queueCount = 1,
-		queueCreateInfo.pQueuePriorities = &queuePriorities
+		.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+		.pNext = nullptr,
+		.flags = NULL,
+		.queueFamilyIndex = queueFamily,
+		.queueCount = 1,
+		.pQueuePriorities = &queuePriorities
 	};
 
 	const std::vector<const char*> deviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 
-	VkPhysicalDeviceVulkan12Features enabledVk12Features{
-		enabledVk12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES,
-		enabledVk12Features.pNext = nullptr,
-		enabledVk12Features.descriptorIndexing = true,
-		enabledVk12Features.shaderSampledImageArrayNonUniformIndexing = true,
-		enabledVk12Features.descriptorBindingVariableDescriptorCount = true,
-		enabledVk12Features.runtimeDescriptorArray = true,
-		enabledVk12Features.bufferDeviceAddress = true
+	VkPhysicalDeviceVulkan12Features enabledVk12Features
+	{
+		.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES,
+		.pNext = nullptr,
+		.descriptorIndexing = true,
+		.shaderSampledImageArrayNonUniformIndexing = true,
+		.descriptorBindingVariableDescriptorCount = true,
+		.runtimeDescriptorArray = true,
+		.bufferDeviceAddress = true
 	};
 
 	VkPhysicalDeviceVulkan13Features enabledVk13Features
 	{
-		enabledVk13Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES,
-		enabledVk13Features.pNext = &enabledVk12Features,
-		enabledVk13Features.synchronization2 = true,
-		enabledVk13Features.dynamicRendering = true
+		.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES,
+		.pNext = &enabledVk12Features,
+		.synchronization2 = true,
+		.dynamicRendering = true
 	};
 
-	VkPhysicalDeviceFeatures enabledVk10Features =
+	VkPhysicalDeviceFeatures enabledVk10Features
 	{
-		enabledVk10Features.samplerAnisotropy = VK_TRUE
+		.samplerAnisotropy = VK_TRUE
 	};
 
 	VkDeviceCreateInfo deviceCreateInfo
 	{
-		deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-		deviceCreateInfo.pNext = &enabledVk13Features,
-		deviceCreateInfo.flags = NULL,
-		deviceCreateInfo.queueCreateInfoCount = 1,
-		deviceCreateInfo.pQueueCreateInfos = &queueCreateInfo,
-		deviceCreateInfo.enabledLayerCount = NULL,
-		deviceCreateInfo.ppEnabledLayerNames = NULL,
-		deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size()),
-		deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data(),
-		deviceCreateInfo.pEnabledFeatures = &enabledVk10Features
+		.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+		.pNext = &enabledVk13Features,
+		.flags = NULL,
+		.queueCreateInfoCount = 1,
+		.pQueueCreateInfos = &queueCreateInfo,
+		.enabledLayerCount = NULL,
+		.ppEnabledLayerNames = NULL,
+		.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size()),
+		.ppEnabledExtensionNames = deviceExtensions.data(),
+		.pEnabledFeatures = &enabledVk10Features
 	};
 
 	physicalDevice = devices[0];
@@ -133,16 +138,20 @@ void InitDevice(VkDevice& device, VkPhysicalDevice& physicalDevice, VkInstance& 
 
 void InitVMA(VmaAllocator& allocator, VkPhysicalDevice physicalDevice, VkDevice device, VkInstance instance)
 {
-	VmaVulkanFunctions vkFunctions = {};
-	vkFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
-	vkFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
+	VmaVulkanFunctions vkFunctions
+	{
+		.vkGetInstanceProcAddr = &vkGetInstanceProcAddr,
+		.vkGetDeviceProcAddr = &vkGetDeviceProcAddr
+	};
 
-	VmaAllocatorCreateInfo allocatorCreateInfo = {};
-	allocatorCreateInfo.flags = VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
-	allocatorCreateInfo.physicalDevice = physicalDevice;
-	allocatorCreateInfo.device = device;
-	allocatorCreateInfo.pVulkanFunctions = &vkFunctions;
-	allocatorCreateInfo.instance = instance;
+	VmaAllocatorCreateInfo allocatorCreateInfo
+	{
+		.flags = VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT,
+		.physicalDevice = physicalDevice,
+		.device = device,
+		.pVulkanFunctions = &vkFunctions,
+		.instance = instance
+	};
 
 	Check(vmaCreateAllocator(&allocatorCreateInfo, &allocator));
 }
@@ -153,22 +162,28 @@ VkSwapchainCreateInfoKHR InitSwapchain(
 	VkSurfaceCapabilitiesKHR surfaceCapabilities, 
 	VkExtent2D extent)
 {
-	VkSwapchainCreateInfoKHR swapchainCI;
-	swapchainCI.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-	swapchainCI.pNext = nullptr;
-	swapchainCI.flags = NULL;
-	swapchainCI.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-	swapchainCI.clipped = VK_TRUE;
-	swapchainCI.oldSwapchain = VK_NULL_HANDLE;
-	swapchainCI.surface = surface;
-	swapchainCI.minImageCount = surfaceCapabilities.minImageCount;
-	swapchainCI.imageFormat = imageFormat;
-	swapchainCI.imageColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-	swapchainCI.imageExtent = extent;
-	swapchainCI.imageArrayLayers = 1;
-	swapchainCI.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-	swapchainCI.preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
-	swapchainCI.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+	VkSwapchainCreateInfoKHR swapchainCI
+	{
+		.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+		.pNext = nullptr,
+		.flags = NULL,
+		.surface = surface,
+		.minImageCount = surfaceCapabilities.minImageCount,
+		.imageFormat = imageFormat,
+		.imageColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR,
+		.imageExtent = extent,
+		.imageArrayLayers = 1,
+		.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+		.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
+		.queueFamilyIndexCount = NULL,
+		.pQueueFamilyIndices = NULL,
+		.preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
+		.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+		.presentMode = VK_PRESENT_MODE_FIFO_KHR,
+		.clipped = VK_TRUE,
+		.oldSwapchain = VK_NULL_HANDLE,
+	};
+
 
 	//VSync mode guaranteed to be available everywhere
 	swapchainCI.presentMode = VK_PRESENT_MODE_FIFO_KHR;
@@ -177,16 +192,20 @@ VkSwapchainCreateInfoKHR InitSwapchain(
 
 VkImageViewCreateInfo InitDepthAttachmentView(const VkImage& depthImage, const VkFormat& depthFormat)
 {
-	VkImageViewCreateInfo depthViewCI = {};
-	depthViewCI.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-	depthViewCI.image = depthImage;
-	depthViewCI.viewType = VK_IMAGE_VIEW_TYPE_2D;
-	depthViewCI.format = depthFormat;
+	VkImageViewCreateInfo depthViewCI
+	{
+		.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+		.image = depthImage,
+		.viewType = VK_IMAGE_VIEW_TYPE_2D,
+		.format = depthFormat
+	};
 
-	VkImageSubresourceRange subresourceRange = {};
-	subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
-	subresourceRange.levelCount = 1;
-	subresourceRange.layerCount = 1;
+	VkImageSubresourceRange subresourceRange
+	{
+		.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT,
+		.levelCount = 1,
+		.layerCount = 1
+	};
 	depthViewCI.subresourceRange = subresourceRange;
 
 	return depthViewCI;
@@ -215,24 +234,27 @@ VkImageCreateInfo InitDepthAttachment(const VkPhysicalDevice& userGpu, glm::vec2
 		}
 	}
 
-	VkImageCreateInfo depthImageCI = {};
-	depthImageCI.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-	depthImageCI.imageType = VK_IMAGE_TYPE_2D;
-	depthImageCI.format = depthFormat;
+	VkImageCreateInfo depthImageCI 
+	{
+		.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+		.imageType = VK_IMAGE_TYPE_2D,
+		.format = depthFormat,
 
-	VkExtent3D extent = {};
-	extent.width = windowSize.x;
-	extent.height = windowSize.y;
-	extent.depth = 1;
+		.extent 
+		{
+			 .width = static_cast<uint32_t>(windowSize.x),
+			 .height = static_cast<uint32_t>(windowSize.y),
+			 .depth = 1
+		},
+
+		.mipLevels = 1,
+		.arrayLayers = 1,
+		.samples = VK_SAMPLE_COUNT_1_BIT,
+		.tiling = VK_IMAGE_TILING_OPTIMAL,
+		.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+		.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED
+	};
 	
-	depthImageCI.extent = extent;
-	depthImageCI.mipLevels = 1;
-	depthImageCI.arrayLayers = 1;
-	depthImageCI.samples = VK_SAMPLE_COUNT_1_BIT;
-	depthImageCI.tiling = VK_IMAGE_TILING_OPTIMAL;
-	depthImageCI.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
-	depthImageCI.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-
 	return depthImageCI;
 };
 	

@@ -74,9 +74,11 @@ void Renderer::InitRenderer()
 	glm::vec2 windowSize = glm::vec2(KawanEngine::Instance().GetWindowSize().x, KawanEngine::Instance().GetWindowSize().y);
 	VkImageCreateInfo depthImageCI = InitDepthAttachment(_userGPU, windowSize);
 
-	VmaAllocationCreateInfo allocCI = {};
-	allocCI.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
-	allocCI.usage = VMA_MEMORY_USAGE_AUTO;
+	VmaAllocationCreateInfo allocCI
+	{
+		.flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT,
+		.usage = VMA_MEMORY_USAGE_AUTO
+	};
 
 	//allocator && pImageCreateInfo && pAllocationCreateInfo && pImage && pAllocation
 	Check(vmaCreateImage(_allocator, &depthImageCI, &allocCI, &_depthImage, &_depthImageAllocation, nullptr));
