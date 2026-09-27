@@ -20,6 +20,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(sdl)
 
+FetchContent_Declare(
+    fastgltf
+    GIT_REPOSITORY https://github.com/spnda/fastgltf
+    GIT_TAG v0.9.x
+)
+
+FetchContent_MakeAvailable(fastgltf)
+
 add_subdirectory(KawanEngine)
 add_subdirectory(testbed)
 

@@ -25,6 +25,7 @@ set(ENGINE_INCLUDE_DIRS
 
 set(ENGINE_LINK_DIR
     "Vulkan::Vulkan"
+    "fastgltf::fastgltf"
     "SDL3::SDL3"
 )
 

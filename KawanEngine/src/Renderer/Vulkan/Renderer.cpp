@@ -13,6 +13,8 @@
 #include <SDL3/SDL_vulkan.h>
 #include <vector>
 #include <glm/glm.hpp>
+#include <fastgltf/core.hpp>
+#include <fastgltf/tools.hpp>
 
 void Renderer::Init()
 {
@@ -85,8 +87,13 @@ void Renderer::InitRenderer()
 
 	//depth image view creation
 	VkImageViewCreateInfo depthViewCI = InitDepthAttachmentView(_depthImage, depthImageCI.format);
-	vkCreateImageView(_device, &depthViewCI, nullptr, &_depthImageView);
+	Check(vkCreateImageView(_device, &depthViewCI, nullptr, &_depthImageView));
 
+	std::filesystem::path assetPath = "C:/Users/schrulll/Desktop/Kawan/Assets/BoxUnlit.gltf";
+
+	fastgltf::Parser gltfParser = fastgltf::Parser(fastgltf::Extensions::KHR_materials_unlit);
+	auto gltfFile = fastgltf::GltfDataBuffer::FromPath(assetPath);
+	auto asset = gltfParser.loadGltf(gltfFile.get(), assetPath.parent_path());
 }
 
 void Renderer::InitCommands()

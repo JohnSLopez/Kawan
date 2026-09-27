@@ -7,7 +7,16 @@
 #define VK_NO_PROTOTYPES
 #include <vulkan/vulkan.h>
 
+#include <glm/glm.hpp>
+
 struct SDL_Window;
+
+struct Vertex
+{
+	glm::vec3 pos;
+	glm::vec3 normal;
+	glm::vec2 uv;
+};
 
 class Renderer
 {
